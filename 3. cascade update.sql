@@ -1,6 +1,4 @@
-USE GanaderiaDB;
-GO
-BEGIN TRAN;
+
 
 -- === Maestro-detalle con CASCADE ===
 ALTER TABLE detalle_compra DROP CONSTRAINT FK_detcomp_compra;
@@ -64,5 +62,3 @@ ALTER TABLE reporte_financiero
   ADD CONSTRAINT FK_rep_fin_emp FOREIGN KEY (empleado_id)
   REFERENCES empleado(id_empleado) ON DELETE SET NULL;
 
-COMMIT;
-GO

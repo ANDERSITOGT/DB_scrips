@@ -7,10 +7,8 @@
   Fecha: [dd/mm/aaaa]
 ********************************************************************/
 
-USE GanaderiaDB;
-GO
 
-BEGIN TRAN;
+
 
 /* ===============================================================
    🐄 GANADO Y SANIDAD
@@ -255,9 +253,6 @@ ALTER TABLE reporte_financiero
 CREATE INDEX IX_rep_fin_emp ON reporte_financiero(empleado_id);
 
 -- alerta (control): polimórfica (sin FK por ahora)
-
-COMMIT;
-GO
 
 /*
 Notas:

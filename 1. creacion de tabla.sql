@@ -1,13 +1,4 @@
-/********************************************************************
-  Proyecto: GanaderiaDB
-  Archivo: 00_init.sql
-  Descripción: Script maestro para crear la base de datos
-               y 50 tablas iniciales (SIN RELACIONES aún).
-  Autor: [Tu Nombre]
-  Fecha: [dd/mm/aaaa]
-********************************************************************/
 
--- Crear la base de datos (versión tarea)
 CREATE DATABASE GanaderiaDB;
 GO
 USE GanaderiaDB;
