@@ -1,0 +1,480 @@
+// ============================================================
+// 🧩 GanaderiaDB - Diagrama Relacional (DBML compatible y completo)
+// Contiene las 52 tablas y sus relaciones principales
+// Uso: copiar en https://dbdiagram.io y hacer clic en "Build Diagram"
+// ============================================================
+
+///////////////////////////////////////////////////////////////
+// 🐄 MÓDULO: GANADO Y SANIDAD (1–10)
+///////////////////////////////////////////////////////////////
+
+// [01] especie
+Table especie {
+  id_especie bigint [pk]
+  nombre nvarchar(120)
+  descripcion nvarchar(255)
+}
+
+// [02] raza
+Table raza {
+  id_raza bigint [pk]
+  nombre nvarchar(120)
+  descripcion nvarchar(255)
+  especie_id bigint [ref: > especie.id_especie]
+}
+
+// [03] animal
+Table animal {
+  id_animal bigint [pk]
+  codigo nvarchar(80)
+  nombre nvarchar(120)
+  especie_id bigint [ref: > especie.id_especie]
+  raza_id bigint [ref: > raza.id_raza]
+  sexo nvarchar(10)
+  fecha_nacimiento date
+  peso decimal(9,2)
+  estado nvarchar(50)
+  foto_url nvarchar(255)
+}
+
+// [04] historial_sanitario
+Table historial_sanitario {
+  id_historial bigint [pk]
+  animal_id bigint [ref: > animal.id_animal]
+  fecha date
+  diagnostico nvarchar(255)
+  observaciones nvarchar(500)
+}
+
+// [05] vacuna
+Table vacuna {
+  id_vacuna bigint [pk]
+  nombre nvarchar(120)
+  dosis nvarchar(60)
+  intervalo_dias int
+  fabricante nvarchar(120)
+}
+
+// [06] aplicacion_vacuna
+Table aplicacion_vacuna {
+  id_aplicacion_vacuna bigint [pk]
+  animal_id bigint [ref: > animal.id_animal]
+  vacuna_id bigint [ref: > vacuna.id_vacuna]
+  fecha date
+  dosis_aplicada nvarchar(60)
+  empleado_id bigint [ref: > empleado.id_empleado]
+}
+
+// [07] tratamiento
+Table tratamiento {
+  id_tratamiento bigint [pk]
+  nombre nvarchar(120)
+  tipo nvarchar(60)
+  descripcion nvarchar(255)
+}
+
+// [08] aplicacion_tratamiento
+Table aplicacion_tratamiento {
+  id_aplicacion_tratamiento bigint [pk]
+  animal_id bigint [ref: > animal.id_animal]
+  tratamiento_id bigint [ref: > tratamiento.id_tratamiento]
+  fecha date
+  dosis_aplicada nvarchar(60)
+  veterinario_id bigint [ref: > empleado.id_empleado]
+}
+
+// [09] desparasitacion
+Table desparasitacion {
+  id_desparasitacion bigint [pk]
+  animal_id bigint [ref: > animal.id_animal]
+  producto nvarchar(120)
+  fecha date
+  dosis_aplicada nvarchar(60)
+  empleado_id bigint [ref: > empleado.id_empleado]
+}
+
+// [10] mortalidad
+Table mortalidad {
+  id_mortalidad bigint [pk]
+  animal_id bigint [ref: > animal.id_animal]
+  fecha date
+  causa nvarchar(255)
+  empleado_id bigint [ref: > empleado.id_empleado]
+}
+
+///////////////////////////////////////////////////////////////
+// 🥛 MÓDULO: PRODUCCIÓN Y REPRODUCCIÓN (11–17)
+///////////////////////////////////////////////////////////////
+
+Table produccion_leche {
+  id_produccion_leche bigint [pk]
+  animal_id bigint [ref: > animal.id_animal]
+  fecha date
+  litros decimal(9,2)
+  empleado_id bigint [ref: > empleado.id_empleado]
+}
+
+Table produccion_carne {
+  id_produccion_carne bigint [pk]
+  animal_id bigint [ref: > animal.id_animal]
+  peso_canal decimal(9,2)
+  fecha date
+  destino nvarchar(120)
+}
+
+Table ordeno {
+  id_ordeno bigint [pk]
+  animal_id bigint [ref: > animal.id_animal]
+  fecha date
+  litros decimal(9,2)
+  turno nvarchar(30)
+  ordenador_id bigint [ref: > empleado.id_empleado]
+}
+
+Table monta {
+  id_monta bigint [pk]
+  macho_id bigint [ref: > animal.id_animal]
+  hembra_id bigint [ref: > animal.id_animal]
+  fecha date
+  tipo nvarchar(30)
+}
+
+Table gestacion {
+  id_gestacion bigint [pk]
+  hembra_id bigint [ref: > animal.id_animal]
+  fecha_inicio date
+  fecha_estimada_parto date
+  estado nvarchar(60)
+}
+
+Table nacimiento {
+  id_nacimiento bigint [pk]
+  madre_id bigint [ref: > animal.id_animal]
+  fecha date
+  cria_animal_id bigint [ref: > animal.id_animal]
+  sexo nvarchar(10)
+  peso decimal(9,2)
+}
+
+Table registro_parto {
+  id_registro_parto bigint [pk]
+  madre_id bigint [ref: > animal.id_animal]
+  fecha date
+  numero_crias int
+  observaciones nvarchar(500)
+}
+
+///////////////////////////////////////////////////////////////
+// 🌾 MÓDULO: ALIMENTACIÓN E INVENTARIOS (18–26)
+///////////////////////////////////////////////////////////////
+
+Table producto_alimenticio {
+  id_producto_alimenticio bigint [pk]
+  nombre nvarchar(120)
+  tipo nvarchar(60)
+  proveedor_id bigint [ref: > proveedor.id_proveedor]
+  precio_unitario decimal(10,2)
+}
+
+Table inventario_alimento {
+  id_inventario_alimento bigint [pk]
+  producto_alimenticio_id bigint [ref: > producto_alimenticio.id_producto_alimenticio]
+  cantidad decimal(12,2)
+  fecha_entrada date
+  fecha_vencimiento date
+  lote nvarchar(60)
+}
+
+Table consumo_animal {
+  id_consumo_animal bigint [pk]
+  animal_id bigint [ref: > animal.id_animal]
+  producto_alimenticio_id bigint [ref: > producto_alimenticio.id_producto_alimenticio]
+  cantidad decimal(9,2)
+  fecha date
+}
+
+Table suplemento {
+  id_suplemento bigint [pk]
+  nombre nvarchar(120)
+  tipo nvarchar(60)
+  nutrientes nvarchar(255)
+}
+
+Table inventario_suplemento {
+  id_inventario_suplemento bigint [pk]
+  suplemento_id bigint [ref: > suplemento.id_suplemento]
+  cantidad decimal(12,2)
+  fecha_ingreso date
+  fecha_vencimiento date
+  lote nvarchar(60)
+}
+
+Table medicamento {
+  id_medicamento bigint [pk]
+  nombre nvarchar(120)
+  laboratorio nvarchar(120)
+  dosis_recomendada nvarchar(60)
+}
+
+Table inventario_medicamento {
+  id_inventario_medicamento bigint [pk]
+  medicamento_id bigint [ref: > medicamento.id_medicamento]
+  cantidad decimal(12,2)
+  fecha_ingreso date
+  fecha_vencimiento date
+  lote nvarchar(60)
+}
+
+Table maquinaria {
+  id_maquinaria bigint [pk]
+  nombre nvarchar(120)
+  tipo nvarchar(60)
+  estado nvarchar(60)
+  fecha_adquisicion date
+}
+
+Table herramienta {
+  id_herramienta bigint [pk]
+  nombre nvarchar(120)
+  tipo nvarchar(60)
+  estado nvarchar(60)
+  fecha_adquisicion date
+}
+
+Table inventario_herramienta {
+  id_inventario_herramienta bigint [pk]
+  herramienta_id bigint [ref: > herramienta.id_herramienta]
+  cantidad decimal(12,2)
+  estado nvarchar(60)
+}
+
+///////////////////////////////////////////////////////////////
+// 👷 MÓDULO: PERSONAL Y NÓMINA (27–32)
+///////////////////////////////////////////////////////////////
+
+Table cargo {
+  id_cargo bigint [pk]
+  nombre nvarchar(120)
+  descripcion nvarchar(255)
+}
+
+Table empleado {
+  id_empleado bigint [pk]
+  nombre nvarchar(120)
+  apellido nvarchar(120)
+  cargo_id bigint [ref: > cargo.id_cargo]
+  fecha_ingreso date
+  salario_base decimal(12,2)
+  foto_url nvarchar(255)
+}
+
+Table planilla {
+  id_planilla bigint [pk]
+  mes tinyint
+  anio smallint
+  empleado_id bigint [ref: > empleado.id_empleado]
+  sueldo decimal(12,2)
+  horas_extra decimal(9,2)
+  deducciones decimal(12,2)
+}
+
+Table turno {
+  id_turno bigint [pk]
+  empleado_id bigint [ref: > empleado.id_empleado]
+  fecha date
+  hora_inicio time
+  hora_fin time
+}
+
+Table capacitacion {
+  id_capacitacion bigint [pk]
+  nombre nvarchar(120)
+  fecha date
+  empleado_id bigint [ref: > empleado.id_empleado]
+  tema nvarchar(255)
+}
+
+Table participacion_capacitacion {
+  id_participacion_capacitacion bigint [pk]
+  empleado_id bigint [ref: > empleado.id_empleado]
+  capacitacion_id bigint [ref: > capacitacion.id_capacitacion]
+  resultado nvarchar(120)
+}
+
+///////////////////////////////////////////////////////////////
+// 💰 MÓDULO: FINANZAS Y COMERCIALIZACIÓN (33–38)
+///////////////////////////////////////////////////////////////
+
+Table compra {
+  id_compra bigint [pk]
+  proveedor_id bigint [ref: > proveedor.id_proveedor]
+  fecha date
+  total decimal(12,2)
+  tipo_pago nvarchar(60)
+}
+
+Table detalle_compra {
+  id_detalle_compra bigint [pk]
+  compra_id bigint [ref: > compra.id_compra]
+  producto_id bigint [ref: > producto.id_producto]
+  cantidad decimal(12,2)
+  precio_unitario decimal(12,2)
+}
+
+Table venta {
+  id_venta bigint [pk]
+  cliente_id bigint [ref: > cliente.id_cliente]
+  fecha date
+  total decimal(12,2)
+  tipo_pago nvarchar(60)
+}
+
+Table detalle_venta {
+  id_detalle_venta bigint [pk]
+  venta_id bigint [ref: > venta.id_venta]
+  producto_id bigint [ref: > producto.id_producto]
+  animal_id bigint [ref: > animal.id_animal]
+  cantidad decimal(12,2)
+  precio_unitario decimal(12,2)
+}
+
+Table factura {
+  id_factura bigint [pk]
+  numero nvarchar(60)
+  fecha date
+  cliente_id bigint [ref: > cliente.id_cliente]
+  proveedor_id bigint [ref: > proveedor.id_proveedor]
+  monto_total decimal(12,2)
+  archivo_url nvarchar(255)
+}
+
+Table pago {
+  id_pago bigint [pk]
+  factura_id bigint [ref: > factura.id_factura]
+  fecha date
+  monto decimal(12,2)
+  tipo_pago nvarchar(60)
+}
+
+///////////////////////////////////////////////////////////////
+// 🚛 MÓDULO: CLIENTES, PROVEEDORES Y LOGÍSTICA (39–42)
+///////////////////////////////////////////////////////////////
+
+Table cliente {
+  id_cliente bigint [pk]
+  nombre nvarchar(120)
+  contacto nvarchar(120)
+  direccion nvarchar(255)
+  tipo_cliente nvarchar(60)
+}
+
+Table proveedor {
+  id_proveedor bigint [pk]
+  nombre nvarchar(120)
+  contacto nvarchar(120)
+  direccion nvarchar(255)
+  tipo_proveedor nvarchar(60)
+}
+
+Table transporte {
+  id_transporte bigint [pk]
+  vehiculo nvarchar(120)
+  tipo nvarchar(60)
+  capacidad decimal(12,2)
+  estado nvarchar(60)
+}
+
+Table envio {
+  id_envio bigint [pk]
+  venta_id bigint [ref: > venta.id_venta]
+  fecha date
+  destino nvarchar(255)
+  transporte_id bigint [ref: > transporte.id_transporte]
+  empleado_id bigint [ref: > empleado.id_empleado]
+  detalle nvarchar(500)
+}
+
+///////////////////////////////////////////////////////////////
+// 🏠 MÓDULO: INFRAESTRUCTURA (43–46)
+///////////////////////////////////////////////////////////////
+
+Table potrero {
+  id_potrero bigint [pk]
+  nombre nvarchar(120)
+  capacidad int
+  hectareas decimal(10,2)
+  estado nvarchar(60)
+}
+
+Table corral {
+  id_corral bigint [pk]
+  nombre nvarchar(120)
+  capacidad int
+  estado nvarchar(60)
+}
+
+Table establo {
+  id_establo bigint [pk]
+  nombre nvarchar(120)
+  capacidad int
+  empleado_id bigint [ref: > empleado.id_empleado]
+}
+
+Table infraestructura_mantenimiento {
+  id_infra_mant bigint [pk]
+  infraestructura_tipo nvarchar(60)
+  infraestructura_id bigint
+  fecha date
+  descripcion nvarchar(255)
+  empleado_id bigint [ref: > empleado.id_empleado]
+}
+
+///////////////////////////////////////////////////////////////
+// 📊 MÓDULO: REPORTES Y CONTROL (47–52)
+///////////////////////////////////////////////////////////////
+
+Table reporte_produccion {
+  id_reporte_produccion bigint [pk]
+  fecha date
+  tipo nvarchar(60)
+  empleado_id bigint [ref: > empleado.id_empleado]
+  datos_resumen nvarchar(max)
+  archivo_url nvarchar(255)
+}
+
+Table reporte_financiero {
+  id_reporte_financiero bigint [pk]
+  fecha date
+  ingresos decimal(14,2)
+  egresos decimal(14,2)
+  balance decimal(14,2)
+  empleado_id bigint [ref: > empleado.id_empleado]
+  archivo_url nvarchar(255)
+}
+
+Table alerta {
+  id_alerta bigint [pk]
+  tipo nvarchar(60)
+  fecha_generada datetime2
+  estado nvarchar(60)
+  detalle nvarchar(max)
+  entidad_origen nvarchar(60)
+  id_origen bigint
+}
+
+Table usuario {
+  id_usuario bigint [pk]
+  nombre nvarchar(120)
+  rol nvarchar(60)
+  contrasena_hash nvarchar(255)
+  permisos_json nvarchar(max)
+}
+
+Table producto {
+  id_producto bigint [pk]
+  nombre nvarchar(120)
+  tipo nvarchar(60)
+  unidad nvarchar(30)
+  descripcion nvarchar(255)
+  precio_base decimal(12,2)
+}

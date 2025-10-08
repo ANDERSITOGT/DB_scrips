@@ -1,0 +1,74 @@
+/**
+ * ===========================================================
+ *  style.css – Estilos visuales del CRUD Compras
+ *  Autor: Sławek & ChatGPT
+ *  Descripción:
+ *    Diseño limpio y minimalista con énfasis en legibilidad.
+ * ===========================================================
+ */
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f9fb;
+  padding: 30px;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #0078d4;
+}
+
+p {
+  text-align: center;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+section {
+  background: white;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  width: 600px;
+}
+
+section h2 {
+  color: #444;
+  border-bottom: 2px solid #0078d4;
+  padding-bottom: 6px;
+}
+
+input {
+  margin: 6px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: calc(100% - 20px);
+}
+
+button {
+  padding: 10px 16px;
+  margin-top: 8px;
+  background: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #005fa3;
+}
+
+pre {
+  background: #f0f2f5;
+  padding: 10px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 13px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
