@@ -15,7 +15,8 @@ CREATE DATABASE ganaderiadb;
 --SELECT datname FROM pg_database;
 
 
-
+CREATE SCHEMA ganaderia AUTHORIZATION uaqnjfoom6g0la;
+SET search_path TO ganaderia;
 
 -- ===============================================================
 -- 🐄 MÓDULO: GANADO Y SANIDAD
