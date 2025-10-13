@@ -2,7 +2,7 @@
 
 host azure
 
-Server: sqlpruebaazure.eastus.azurecontainer.io,1433
+Server: sqlpersistente.eastus.azurecontainer.io,1433
 User: sa
 Password: Sql2025@Express
 Encrypt: No
