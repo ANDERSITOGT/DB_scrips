@@ -1,64 +1,64 @@
+-- cambios para poner las relaciones en cascada y algunos set null
 
+-- maestro detalle con borrado en cascada
+alter table detalle_compra drop constraint FK_detcomp_compra;
+alter table detalle_compra
+ add constraint FK_detcomp_compra foreign key (compra_id)
+ references compra(id_compra) on delete cascade;
 
--- === Maestro-detalle con CASCADE ===
-ALTER TABLE detalle_compra DROP CONSTRAINT FK_detcomp_compra;
-ALTER TABLE detalle_compra
-  ADD CONSTRAINT FK_detcomp_compra FOREIGN KEY (compra_id)
-  REFERENCES compra(id_compra) ON DELETE CASCADE;
+alter table detalle_venta drop constraint FK_detventa_venta;
+alter table detalle_venta
+ add constraint FK_detventa_venta foreign key (venta_id)
+ references venta(id_venta) on delete cascade;
 
-ALTER TABLE detalle_venta DROP CONSTRAINT FK_detventa_venta;
-ALTER TABLE detalle_venta
-  ADD CONSTRAINT FK_detventa_venta FOREIGN KEY (venta_id)
-  REFERENCES venta(id_venta) ON DELETE CASCADE;
+alter table pago drop constraint FK_pago_factura;
+alter table pago
+ add constraint FK_pago_factura foreign key (factura_id)
+ references factura(id_factura) on delete cascade;
 
-ALTER TABLE pago DROP CONSTRAINT FK_pago_factura;
-ALTER TABLE pago
-  ADD CONSTRAINT FK_pago_factura FOREIGN KEY (factura_id)
-  REFERENCES factura(id_factura) ON DELETE CASCADE;
+-- relaciones con empleados, aqui se pone set null xq no quiero borrar todo
+alter table aplicacion_vacuna drop constraint FK_apvac_empleado;
+alter table aplicacion_vacuna
+ add constraint FK_apvac_empleado foreign key (empleado_id)
+ references empleado(id_empleado) on delete set null;
 
--- === Relaciones con empleados: SET NULL ===
-ALTER TABLE aplicacion_vacuna DROP CONSTRAINT FK_apvac_empleado;
-ALTER TABLE aplicacion_vacuna
-  ADD CONSTRAINT FK_apvac_empleado FOREIGN KEY (empleado_id)
-  REFERENCES empleado(id_empleado) ON DELETE SET NULL;
+alter table aplicacion_tratamiento drop constraint FK_aptrat_veterinario;
+alter table aplicacion_tratamiento
+ add constraint FK_aptrat_veterinario foreign key (veterinario_id)
+ references empleado(id_empleado) on delete set null;
 
-ALTER TABLE aplicacion_tratamiento DROP CONSTRAINT FK_aptrat_veterinario;
-ALTER TABLE aplicacion_tratamiento
-  ADD CONSTRAINT FK_aptrat_veterinario FOREIGN KEY (veterinario_id)
-  REFERENCES empleado(id_empleado) ON DELETE SET NULL;
+alter table desparasitacion drop constraint FK_despara_empleado;
+alter table desparasitacion
+ add constraint FK_despara_empleado foreign key (empleado_id)
+ references empleado(id_empleado) on delete set null;
 
-ALTER TABLE desparasitacion DROP CONSTRAINT FK_despara_empleado;
-ALTER TABLE desparasitacion
-  ADD CONSTRAINT FK_despara_empleado FOREIGN KEY (empleado_id)
-  REFERENCES empleado(id_empleado) ON DELETE SET NULL;
+alter table mortalidad drop constraint FK_mortalidad_empleado;
+alter table mortalidad
+ add constraint FK_mortalidad_empleado foreign key (empleado_id)
+ references empleado(id_empleado) on delete set null;
 
-ALTER TABLE mortalidad DROP CONSTRAINT FK_mortalidad_empleado;
-ALTER TABLE mortalidad
-  ADD CONSTRAINT FK_mortalidad_empleado FOREIGN KEY (empleado_id)
-  REFERENCES empleado(id_empleado) ON DELETE SET NULL;
+alter table produccion_leche drop constraint FK_prodl_empleado;
+alter table produccion_leche
+ add constraint FK_prodl_empleado foreign key (empleado_id)
+ references empleado(id_empleado) on delete set null;
 
-ALTER TABLE produccion_leche DROP CONSTRAINT FK_prodl_empleado;
-ALTER TABLE produccion_leche
-  ADD CONSTRAINT FK_prodl_empleado FOREIGN KEY (empleado_id)
-  REFERENCES empleado(id_empleado) ON DELETE SET NULL;
+alter table ordeno drop constraint FK_ordeno_empleado;
+alter table ordeno
+ add constraint FK_ordeno_empleado foreign key (ordenador_id)
+ references empleado(id_empleado) on delete set null;
 
-ALTER TABLE ordeno DROP CONSTRAINT FK_ordeno_empleado;
-ALTER TABLE ordeno
-  ADD CONSTRAINT FK_ordeno_empleado FOREIGN KEY (ordenador_id)
-  REFERENCES empleado(id_empleado) ON DELETE SET NULL;
+alter table envio drop constraint FK_envio_empleado;
+alter table envio
+ add constraint FK_envio_empleado foreign key (empleado_id)
+ references empleado(id_empleado) on delete set null;
 
-ALTER TABLE envio DROP CONSTRAINT FK_envio_empleado;
-ALTER TABLE envio
-  ADD CONSTRAINT FK_envio_empleado FOREIGN KEY (empleado_id)
-  REFERENCES empleado(id_empleado) ON DELETE SET NULL;
+alter table reporte_produccion drop constraint FK_rep_prod_emp;
+alter table reporte_produccion
+ add constraint FK_rep_prod_emp foreign key (empleado_id)
+ references empleado(id_empleado) on delete set null;
 
-ALTER TABLE reporte_produccion DROP CONSTRAINT FK_rep_prod_emp;
-ALTER TABLE reporte_produccion
-  ADD CONSTRAINT FK_rep_prod_emp FOREIGN KEY (empleado_id)
-  REFERENCES empleado(id_empleado) ON DELETE SET NULL;
-
-ALTER TABLE reporte_financiero DROP CONSTRAINT FK_rep_fin_emp;
-ALTER TABLE reporte_financiero
-  ADD CONSTRAINT FK_rep_fin_emp FOREIGN KEY (empleado_id)
-  REFERENCES empleado(id_empleado) ON DELETE SET NULL;
+alter table reporte_financiero drop constraint FK_rep_fin_emp;
+alter table reporte_financiero
+ add constraint FK_rep_fin_emp foreign key (empleado_id)
+ references empleado(id_empleado) on delete set null;
 
